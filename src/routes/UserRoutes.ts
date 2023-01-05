@@ -9,7 +9,8 @@ const { body, params } = UserValidations
 // ---------- CREATE
 
 router.post('/', [ 
-    body.has.name, body.has.email, body.has.username, body.has.password, body.has.role,
+    body.has.name, body.has.email, body.has.username, body.has.password,
+    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username,
     body.notExist.email, body.notExist.username
 ], UserController.create )
 
@@ -24,6 +25,14 @@ router.get('/:id', [
 router.delete('/:id', [
     params.has.id,
 ], UserController.remove )
+
+// ---------- UPDATE
+
+router.put('/:id', [
+    params.has.id,
+    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username,
+    body.notExist.email, body.notExist.username
+], UserController.update )
 
 // ---------- LIST
 

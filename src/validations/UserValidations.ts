@@ -62,45 +62,79 @@ const body = {
     has: {
         name: (request: Request, response: Response, next: NextFunction) => {
             const { name } = request.body
-            
             if(!name) return response.status(400).json({ error: "name is necessary" })
-            else if(!utils.validate.name(name)) return response.status(400).json({ error: "name is invalid" })
 
             return next()
         },
 
         email: async (request: Request, response: Response, next: NextFunction) => {
             const { email } = request.body
-            
             if(!email) return response.status(400).json({ error: "email is necessary" })
-            else if(!utils.validate.email(email)) return response.status(400).json({ error: "email is invalid" })
+
             return next()
         },
 
         password: (request: Request, response: Response, next: NextFunction) => {
             const { password } = request.body
-            
             if(!password) return response.status(400).json({ error: "password is necessary" })
-            else if(!utils.validate.password(password)) return response.status(400).json({ error: "password is invalid" })
 
             return next()
         },
 
         role: (request: Request, response: Response, next: NextFunction) => {
             const { role } = request.body
-            
             if(!role) return response.status(400).json({ error: "role is necessary" })
-            else if(!utils.validate.role(role)) return response.status(400).json({ error: "role is invalid" })
 
             return next()
         },
 
         username: async (request: Request, response: Response, next: NextFunction) => {
             const { username } = request.body
-            
             if(!username) return response.status(400).json({ error: "username is necessary" })
-            else if(!utils.validate.username(username)) return response.status(400).json({ error: "username is invalid" })
 
+            return next()
+        },
+    },
+
+    isValid: {
+        name: (request: Request, response: Response, next: NextFunction) => {
+            const { name } = request.body
+            if (name) {
+                if(!utils.validate.name(name)) return response.status(400).json({ error: "name is invalid" })
+            }
+
+            return next()
+        },
+
+        email: async (request: Request, response: Response, next: NextFunction) => {
+            const { email } = request.body
+            if (email) {
+                if(!utils.validate.email(email)) return response.status(400).json({ error: "email is invalid" })
+            }            
+            return next()
+        },
+
+        password: (request: Request, response: Response, next: NextFunction) => {
+            const { password } = request.body
+            if (password) {
+                if(!utils.validate.password(password)) return response.status(400).json({ error: "password is invalid" })
+            }
+            return next()
+        },
+
+        role: (request: Request, response: Response, next: NextFunction) => {
+            const { role } = request.body
+            if (role) {
+                if(!utils.validate.role(role)) return response.status(400).json({ error: "role is invalid" })
+            }
+            return next()
+        },
+
+        username: async (request: Request, response: Response, next: NextFunction) => {
+            const { username } = request.body
+            if (username) {
+                if(!utils.validate.username(username)) return response.status(400).json({ error: "username is invalid" })
+            }
             return next()
         },
     },
@@ -119,7 +153,7 @@ const body = {
             if(user) return response.status(409).json({ error: "username alredy exists" })
             return next()
         } 
-    }
+    },
 }
 
 const params = {

@@ -64,6 +64,33 @@ class Controller {
         }
     }
 
+    async update(request: Request, response: Response) {
+        try {
+            const { id } = request.params;
+            const { name, email, username, password } = request.body
+
+            let user = await UserModel.findById(id) 
+            if(!user) return response.status(404).send({ error: 'user not found' })
+
+            if(name) user.name = name
+            if(email) user.email = email
+            if(username) user.username = username
+            if(password) user.password = password
+
+            user = await user.save({ timestamps: true })
+
+            return response.status(200).json({ 
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
+            });
+        } catch (e) {
+            console.log(e)
+            return response.status(500).send({ error: 'something wrong happened in: user.show' })
+        }
+    }
+
 }
 
 export const UserController = new Controller()
