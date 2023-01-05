@@ -6,8 +6,13 @@ class Controller {
 
     async create(request: Request, response: Response) {
         try {
-            const user = await UserModel.create(request.body)
-            return response.status(200).json({ user: user.toJSON() });
+            const user = await (await UserModel.create(request.body))
+            return response.status(200).json({ 
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
+            });
         } catch (e) {
             console.log(e)
             return response.status(500).send({ error: 'something wrong happened in: user.create' })
@@ -47,7 +52,12 @@ class Controller {
             const user = await UserModel.findByIdAndDelete(id)
             if(!user) return response.status(404).send({ error: 'user not found' })
 
-            return response.status(200).json({ user: user.toJSON() });
+            return response.status(200).json({ 
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
+            });
         } catch (e) {
             console.log(e)
             return response.status(500).send({ error: 'something wrong happened in: user.show' })
