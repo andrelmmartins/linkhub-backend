@@ -19,6 +19,12 @@ router.get('/:id', [
     params.has.id,
 ], UserController.show )
 
+// ---------- REMOVE
+
+router.delete('/:id', [
+    params.has.id,
+], UserController.remove )
+
 // ---------- LIST
 
 router.get('/list/all', UserController.list )

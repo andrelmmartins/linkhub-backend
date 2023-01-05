@@ -132,6 +132,14 @@ const params = {
             
             return next()
         }
+    },
+    exists: {
+        id: async (request: Request, response: Response, next: NextFunction) => {
+            const { id } = request.params
+            const user = await utils.exists.id(id)
+            if(!user) return response.status(404).json({ error: "user not found" })
+            return next()
+        }
     }
 }
 
