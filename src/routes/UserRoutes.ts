@@ -4,13 +4,23 @@ import { UserValidations } from '../validations'
 
 const router = express.Router()
 
-const { body } = UserValidations
+const { body, params } = UserValidations
 
-// create
-const createValidations = [ body.has.name, body.has.email, body.has.username, body.has.password, body.has.role, body.exists.email, body.exists.username ]
-router.post('/', createValidations, UserController.create )
+// ---------- CREATE
 
-// list
-router.get('/list', UserController.list )
+router.post('/', [ 
+    body.has.name, body.has.email, body.has.username, body.has.password, body.has.role,
+    body.notExist.email, body.notExist.username
+], UserController.create )
+
+// ---------- SHOW
+
+router.get('/:id', [
+    params.has.id,
+], UserController.show )
+
+// ---------- LIST
+
+router.get('/list/all', UserController.list )
 
 export { router as UserRoutes }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from 'jsonwebtoken'
+import mongoose from "mongoose";
 
 import { UserModel } from "../models";
 import { Role, roles } from '../types'
@@ -34,13 +34,23 @@ const utils = {
             return Boolean(
                 username.match(/^[a-z0-9](\.?[a-z0-9]){3,}$/)
             )
-        } 
+        },
+
+        id: (id: string) => {
+            return mongoose.Types.ObjectId.isValid(id)
+        }
     },
     exists: {
+        id: async (id: string) => {
+            const user = await UserModel.findById(id)
+            return user
+        },
+
         email: async (email: string) => {
             const user = await UserModel.findOne({ 'email': {'$eq': email }})
             return user
         },
+
         username: async (username: string) => {
             const user = await UserModel.findOne({ 'username': {'$eq': username }})
             return user
@@ -95,21 +105,37 @@ const body = {
         },
     },
     
-    exists: {
+    notExist: {
         email: async (request: Request, response: Response, next: NextFunction) =>  {
             const { email } = request.body
-            if(await utils.exists.email(email)) return response.status(409).json({ error: "email alredy exists" })
+            const user = await utils.exists.email(email)
+            if(user) return response.status(409).json({ error: "email alredy exists" })
             return next()
         },
 
         username: async (request: Request, response: Response, next: NextFunction) =>  {
             const { username } = request.body
-            if(await utils.exists.username(username)) return response.status(409).json({ error: "username alredy exists" })
+            const user = await utils.exists.username(username)
+            if(user) return response.status(409).json({ error: "username alredy exists" })
             return next()
         } 
     }
 }
 
+const params = {
+    has: {
+        id: (request: Request, response: Response, next: NextFunction) => {
+            const { id } = request.params
+            
+            if(!id) return response.status(400).json({ error: "id is necessary" })
+            else if (!utils.validate.id(id)) return response.status(400).json({ error: "id is invalid" })
+            
+            return next()
+        }
+    }
+}
+
 export const UserValidations = {
-    body
+    body,
+    params
 }
