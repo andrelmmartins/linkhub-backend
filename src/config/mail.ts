@@ -1,11 +1,11 @@
 import sendgrid from '@sendgrid/mail'
 
-import { APP, SENDER, SENDGRID } from './variables'
+import { FRONTEND, SENDER, SENDGRID } from './variables'
 sendgrid.setApiKey(SENDGRID)
 
 export async function sendForgetMail(email: string, token: string) : Promise<boolean> {
 
-    let forgetLink = APP + '/auth/change?token=' + token
+    let forgetLink = FRONTEND + '/auth/change?token=' + token
 
     return await sendgrid.send({
         to: email,
