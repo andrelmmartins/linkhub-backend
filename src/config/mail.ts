@@ -7,21 +7,17 @@ export async function sendForgetMail(email: string, token: string) : Promise<boo
 
     let forgetLink = APP + '/auth/change?token=' + token
 
-    const result = await sendgrid.send({
+    return await sendgrid.send({
         to: email,
         from: SENDER,
         subject: 'Linkhub | Recuperação de Senha',
         text: 'Recebemos o seu pedido de recuperação de senha! Clique no link para recuperar: ' + forgetLink,
     })
-
-    console.log(result)
-    // .then(() => {
-    //     return true
-    // })
-    // .catch((e) => {
-    //     console.log(e)
-    //     return false
-    // })
-
-    return true
+    .then(() => {
+        return true
+    })
+    .catch((e) => {
+        console.log(e)
+        return false
+    })
 }
