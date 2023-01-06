@@ -1,12 +1,37 @@
 import { Request, Response } from 'express'
 
+import { USER_EMAIL, USER_NAME, USER_PASSWORD } from '../config/variables'
 import { UserModel } from '../models'
 
 class Controller {
 
+    constructor() {
+        this.createFirstUser()
+    }
+
+    private async createFirstUser() {
+        try {
+
+            const user = await UserModel.findOne({ 'email': {'$eq': USER_EMAIL }})
+            if(!user) {
+                await UserModel.create({
+                    name: USER_NAME,
+                    username: USER_NAME,
+                    email: USER_EMAIL,
+                    password: USER_PASSWORD,
+                    role: 'admin'
+                })
+            }
+
+        } catch (e) {
+            console.log(e)
+            console.log('something wrong happened in: first.user.creation')
+        }
+    } 
+
     async create(request: Request, response: Response) {
         try {
-            const user = await (await UserModel.create(request.body))
+            const user = await UserModel.create(request.body)
             return response.status(200).json({ 
                 user: {
                     ...user.toJSON(),
@@ -60,7 +85,7 @@ class Controller {
             });
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: user.show' })
+            return response.status(500).send({ error: 'something wrong happened in: user.remove' })
         }
     }
 
@@ -87,10 +112,9 @@ class Controller {
             });
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: user.show' })
+            return response.status(500).send({ error: 'something wrong happened in: user.update' })
         }
     }
-
 }
 
 export const UserController = new Controller()

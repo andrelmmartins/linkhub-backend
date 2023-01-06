@@ -1,41 +1,48 @@
 import express from 'express'
 import { UserController } from '../controllers'
-import { UserValidations } from '../validations'
+import { UserValidations, AuthValidations } from '../validations'
 
 const router = express.Router()
 
 const { body, params } = UserValidations
+const { authenticated, role } = AuthValidations
 
 // ---------- CREATE
 
 router.post('/', [ 
-    body.has.name, body.has.email, body.has.username, body.has.password,
-    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username,
+    authenticated.asAdmin,
+    body.has.name, body.has.email, body.has.username, body.has.password, role.body,
+    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username, role.isValid,
     body.notExist.email, body.notExist.username
 ], UserController.create )
 
 // ---------- SHOW
 
 router.get('/:id', [
+    authenticated.asAdmin,
     params.has.id,
 ], UserController.show )
 
 // ---------- REMOVE
 
 router.delete('/:id', [
+    authenticated.asAdmin,
     params.has.id,
 ], UserController.remove )
 
 // ---------- UPDATE
 
 router.put('/:id', [
+    authenticated.only,
     params.has.id,
-    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username,
+    body.isValid.name, body.isValid.email, body.isValid.password, body.isValid.username, role.isValid,
     body.notExist.email, body.notExist.username
 ], UserController.update )
 
 // ---------- LIST
 
-router.get('/list/all', UserController.list )
+router.get('/list/all', [
+    authenticated.asAdmin,
+], UserController.list )
 
 export { router as UserRoutes }

@@ -1,11 +1,8 @@
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-dotenv.config()
-
-const url = process.env.MONGO_URL ?? ''
+import { MONGO } from './variables';
 
 mongoose.set("strictQuery", false);
-mongoose.connect(url)
+mongoose.connect(MONGO)
     .then(() => {
         console.log('MongoDB Connexcted')
     })

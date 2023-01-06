@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
 import { UserModel } from "../models";
-import { Role, roles } from '../types'
 
 const utils = {
     validate : {
@@ -24,12 +23,6 @@ const utils = {
             )
         },
     
-        role: (role: string) => {
-            return (
-                roles.includes(role as Role)
-            )
-        },
-    
         username: (username: string) => {
             return Boolean(
                 username.match(/^[a-z0-9](\.?[a-z0-9]){3,}$/)
@@ -40,6 +33,7 @@ const utils = {
             return mongoose.Types.ObjectId.isValid(id)
         }
     },
+
     exists: {
         id: async (id: string) => {
             const user = await UserModel.findById(id)
@@ -81,13 +75,6 @@ const body = {
             return next()
         },
 
-        role: (request: Request, response: Response, next: NextFunction) => {
-            const { role } = request.body
-            if(!role) return response.status(400).json({ error: "role is necessary" })
-
-            return next()
-        },
-
         username: async (request: Request, response: Response, next: NextFunction) => {
             const { username } = request.body
             if(!username) return response.status(400).json({ error: "username is necessary" })
@@ -118,14 +105,6 @@ const body = {
             const { password } = request.body
             if (password) {
                 if(!utils.validate.password(password)) return response.status(400).json({ error: "password is invalid" })
-            }
-            return next()
-        },
-
-        role: (request: Request, response: Response, next: NextFunction) => {
-            const { role } = request.body
-            if (role) {
-                if(!utils.validate.role(role)) return response.status(400).json({ error: "role is invalid" })
             }
             return next()
         },
