@@ -31,10 +31,10 @@ class Controller {
                     password: undefined
                 },
                 token
-            });
+            })
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: auth.create.account' })
+            return response.status(500).send('something wrong happened in: auth.create.account')
         }
     }
 
@@ -42,9 +42,9 @@ class Controller {
         try {
             const { email, password } = request.body
 
-            const user = await UserModel.findOne({ 'email': {'$eq': email }}).select('+password');
+            const user = await UserModel.findOne({ 'email': {'$eq': email }}).select('+password')
         
-            if(!user || !(await bcrypt.compare(password, user.password))) return response.status(401).json({error: 'incorrect email or password'});
+            if(!user || !(await bcrypt.compare(password, user.password))) return response.status(401).send('incorrect email or password')
 
             const token = authToken(user.id)
             
@@ -54,11 +54,11 @@ class Controller {
                     password: undefined
                 },
                 token
-            });
+            })
             
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: auth' })
+            return response.status(500).send('something wrong happened in: auth')
         }
     }
 
@@ -66,28 +66,28 @@ class Controller {
         try {
             const { email } = request.body
 
-            const user = await UserModel.findOne({ 'email': {'$eq': email }});
-            if( !user) return response.status(404).json({error: 'user not found'});
+            const user = await UserModel.findOne({ 'email': {'$eq': email }})
+            if( !user) return response.status(404).send('user not found')
         
             let token = forgetToken(user.id)
             let wasSent = await sendForgetMail(user.email, token)
             
-            if (!wasSent) return response.status(500).send({ error: 'something wrong happened in: seng.forget.mail' })
-            else return response.status(200).send();
+            if (!wasSent) return response.status(500).send('something wrong happened in: seng.forget.mail')
+            else return response.status(200).send()
     
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: auth.forget' })
+            return response.status(500).send('something wrong happened in: auth.forget')
         }
     }
 
     async change(request: Request, response: Response) {
         try {
-            const { id } = request.params;
+            const { id } = request.params
             const { password } = request.body
 
             let user = await UserModel.findById(id) 
-            if(!user) return response.status(404).send({ error: 'user not found' })
+            if(!user) return response.status(404).send('user not found')
 
             if(password) user.password = password
 
@@ -98,10 +98,10 @@ class Controller {
                     ...user.toJSON(),
                     password: undefined
                 }
-            });
+            })
         } catch (e) {
             console.log(e)
-            return response.status(500).send({ error: 'something wrong happened in: user.update' })
+            return response.status(500).send('something wrong happened in: user.update')
         }
     }
 

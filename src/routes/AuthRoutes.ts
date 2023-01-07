@@ -8,9 +8,9 @@ const { body, params } = UserValidations
 
 // ---------- AUTH
 
-router.post('/', [
+router.post('/signIn', [
     body.has.email, body.has.password,
-    body.isValid.email, body.isValid.password,
+    body.isValid.email,
 ], AuthController.auth )
 
 // ---------- CREATE
