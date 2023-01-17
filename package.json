@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npx nodemon",
-    "start": "node ./public/index.js",
+    "start": "node ./build/index.js",
     "build": "tsc",
     "build:start": "npm run build && npm run start"
   },
