@@ -16,9 +16,6 @@ server.use(cors({
 server.use('/user', UserRoutes)
 server.use('/auth', AuthRoutes)
 
-server.listen(PORT || 4000, () => {
+server.listen(PORT || 3000, () => {
     console.log("Server Online")
 })
-
-const app = server
-export default app
