@@ -7,7 +7,7 @@ export const FORGOT_ROUTE   = process.env.FORGOT_ROUTE  ?? ''
 export const USER_EMAIL     = process.env.USER_EMAIL    ?? ''
 export const USER_NAME      = process.env.USER_NAME     ?? ''
 export const USER_PASSWORD  = process.env.USER_PASSWORD ?? ''
-export const PORT           = process.env.PORT          ?? 3333
+export const PORT           = process.env.PORT          ?? ''
 
 if(!MONGO)          throw new Error('process.env.MONGO is necessary')
 if(!HASH)           throw new Error('process.env.HASH is necessary')
