@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 
 import { UserModel, TokenModel } from '../models'
 import { HASH } from '../config/variables'
-import { sendForgotMail } from '../config/Mail'
+import { sendForgotMail } from '../config/mail'
 
 function authToken(id: string) {
     return jwt.sign({ id }, HASH, {
