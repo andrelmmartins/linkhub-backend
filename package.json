@@ -1,7 +1,7 @@
 {
   "name": "linkhub-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./build/index.js",
   "repository": "https://github.com/andremedeiro/linkhub-backend.git",
   "author": "André Martins <andre.lucas.medeir@gmail.com>",
   "license": "MIT",
