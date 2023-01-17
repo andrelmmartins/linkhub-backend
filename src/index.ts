@@ -6,6 +6,8 @@ dotenv.config()
 import { UserRoutes, AuthRoutes } from './routes'
 import { PORT, FRONTEND } from './config/variables'
 
+console.log(FRONTEND)
+
 const server = express()
 
 server.use(express.json())
@@ -13,8 +15,8 @@ server.use(cors({
     origin: FRONTEND
 }))
 
-server.use('/api/user', UserRoutes)
-server.use('/api/auth', AuthRoutes)
+server.use('/user', UserRoutes)
+server.use('/auth', AuthRoutes)
 
 server.listen( PORT, () => {
     console.log("Server Online")
