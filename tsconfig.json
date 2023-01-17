@@ -1,6 +1,6 @@
 {
     "compilerOptions": {                   
-      "outDir": "public",                          
+      "outDir": "build",                          
       "rootDir": "src",
       "noImplicitAny": true,
       "resolveJsonModule": true,
