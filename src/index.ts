@@ -13,8 +13,8 @@ server.use(cors({
     origin: FRONTEND
 }))
 
-server.use('/user', UserRoutes)
-server.use('/auth', AuthRoutes)
+server.use('/api/user', UserRoutes)
+server.use('/api/auth', AuthRoutes)
 
 server.listen( PORT, () => {
     console.log("Server Online")
