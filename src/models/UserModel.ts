@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     role:       { type: String, required: true, lowercase: true, default: "normal", trim: true, enum: roles },
     password:   { type: String, select: false, default: "linkhub" },
 }, {
-    timestamps: true
+    timestamps: true,
 })
 
 UserSchema.pre('save', async function( next ) {

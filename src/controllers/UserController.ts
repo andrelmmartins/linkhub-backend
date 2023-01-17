@@ -115,6 +115,30 @@ class Controller {
             return response.status(500).send('something wrong happened in: user.update')
         }
     }
+
+    async emailAlredyExists(request: Request, response: Response) {
+        try {
+            const { email } = request.body
+
+            const user = await UserModel.findOne({ 'email': {'$eq': email }})
+            return response.status(200).json({ exists: !!user })
+        } catch (e) {
+            console.log(e)
+            return response.status(500).send('something wrong happened in: user.show')
+        }
+    }
+
+    async usernameAlredyExists(request: Request, response: Response) {
+        try {
+            const { username } = request.body
+
+            const user = await UserModel.findOne({ 'username': {'$eq': username }})
+            return response.status(200).json({ exists: !!user })
+        } catch (e) {
+            console.log(e)
+            return response.status(500).send('something wrong happened in: user.show')
+        }
+    }
 }
 
 export const UserController = new Controller()
