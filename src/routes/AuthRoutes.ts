@@ -1,16 +1,17 @@
 import express from 'express'
 import { AuthController } from '../controllers'
-import { UserValidations } from '../validations'
+import { AuthValidations, UserValidations } from '../validations'
 
 const router = express.Router()
 
 const { body, params } = UserValidations
+const { params : authParams } = AuthValidations
 
 // ---------- AUTH
 
-router.post('/', [
+router.post('/signIn', [
     body.has.email, body.has.password,
-    body.isValid.email, body.isValid.password,
+    body.isValid.email,
 ], AuthController.auth )
 
 // ---------- CREATE
@@ -21,17 +22,23 @@ router.post('/create', [
     body.notExist.email, body.notExist.username
 ], AuthController.createAccount )
 
-// ---------- FORGET
+// ---------- FORGOT
 
-router.post('/forget', [
+router.post('/forgot', [
     body.has.email,
     body.isValid.email,
-], AuthController.forget )
+], AuthController.forgot )
 
-// ---------- FORGET
-
-router.post('/change/:id', [
+router.get('/forgot/:id/:token', [
     params.has.id,
+    authParams.has.token
+], AuthController.validateForgotProcess )
+
+// ---------- CHANGE
+
+router.put('/change/:id/:token', [
+    params.has.id,
+    authParams.has.token,
     body.has.password,
     body.isValid.password,
 ], AuthController.change )

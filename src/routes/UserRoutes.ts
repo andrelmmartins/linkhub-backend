@@ -23,6 +23,16 @@ router.get('/:id', [
     params.has.id,
 ], UserController.show )
 
+router.post('/exists/email', [
+    body.has.email,
+    body.isValid.email
+], UserController.emailAlredyExists )
+
+router.post('/exists/username', [
+    body.has.username,
+    body.isValid.username
+], UserController.usernameAlredyExists )
+
 // ---------- REMOVE
 
 router.delete('/:id', [
