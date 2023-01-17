@@ -7,7 +7,7 @@ const transport = nodemailer.createTransport({
     auth: {
         user: SENDER,
         pass: SENDER_PASS
-    }
+    },
 })
 
 transport.verify().catch(console.error)
@@ -15,7 +15,8 @@ transport.verify().catch(console.error)
 export async function sendForgotMail(id: string, email: string, token: string) : Promise<boolean> {
     
     return await transport.sendMail({
-        from: 'Linkhub',
+        from: `Linkhub ${SENDER}`,
+        sender: SENDER,
         to: email,
         subject: 'Linkhub | Recuperação de Senha',
         html: generateEmail(id, token)
